@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D99A0970-88FA-4AB9-922E-A3E25BAB6BB9}</ProjectGuid>
+    <ProjectGuid>{2767A0B7-CBE6-4651-99B1-19A84D3F9B3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UsbInfo</RootNamespace>
-    <AssemblyName>UsbInfo</AssemblyName>
+    <RootNamespace>UsbInfo.Natives</RootNamespace>
+    <AssemblyName>UsbInfo.Natives</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,15 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UsbDevice.cs" />
-    <Compile Include="UsbDeviceFinder.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UsbInfo.Natives\UsbInfo.Natives.csproj">
-      <Project>{2767A0B7-CBE6-4651-99B1-19A84D3F9B3C}</Project>
-      <Name>UsbInfo.Natives</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
