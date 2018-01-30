@@ -105,7 +105,6 @@ namespace UsbInfo.Natives
             public short DeviceAddress;
             public int NumberOfOpenPipes;
             public int ConnectionStatus;
-            //public IntPtr PipeList; 
         }
 
         [DllImport("setupapi.dll")]
@@ -133,6 +132,8 @@ namespace UsbInfo.Natives
         );
 
         public const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x220448;
+
+        const int IOCTL_USB_GET_NODE_INFORMATION = 0x220408;
         public const int GENERIC_WRITE = 0x40000000;
         public const int FILE_SHARE_READ = 0x1;
         public const int FILE_SHARE_WRITE = 0x2;
@@ -265,6 +266,32 @@ namespace UsbInfo.Natives
             public string RootHubName;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        struct USB_NODE_INFORMATION
+        {
+            public int NodeType;
+            public USB_HUB_INFORMATION HubInformation;          // Yeah, I'm assuming we'll just use the first form 
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        struct USB_HUB_INFORMATION
+        {
+            public USB_HUB_DESCRIPTOR HubDescriptor;
+            public byte HubIsBusPowered;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        struct USB_HUB_DESCRIPTOR
+        {
+            public byte bDescriptorLength;
+            public byte bDescriptorType;
+            public byte bNumberOfPorts;
+            public short wHubCharacteristics;
+            public byte bPowerOnToPowerGood;
+            public byte bHubControlCurrent;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+            public byte[] bRemoveAndPowerMask;
+        }
+
         public static string GetRootHub(string hostController)
         {
             using (var handle = CreateFile(
@@ -273,7 +300,16 @@ namespace UsbInfo.Natives
                 ThrowIfSetLastError(!handle.IsInvalid);
 
                 var usbRootHubName = DeviceIoControlInvoker.Invoke<USB_ROOT_HUB_NAME>(handle, IOCTL_USB_GET_ROOT_HUB_NAME);
-                return usbRootHubName.RootHubName;
+                var rootHubName = @"\\.\" + usbRootHubName.RootHubName;
+                using (var handle2 = CreateFile(
+                    rootHubName, GENERIC_WRITE, FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero)) {
+
+                    var usbNodeInformation = new USB_NODE_INFORMATION {NodeType = 0};
+                    var nodeInformation = DeviceIoControlInvoker
+                        .Invoke(handle2, IOCTL_USB_GET_NODE_INFORMATION, usbNodeInformation);
+                }
+
+                return rootHubName;
             }
         }
 

@@ -25,6 +25,7 @@ namespace UsbInfo.Natives.Tests
         {
             var spDevinfoDatas = NativeMethods.HostControllerPaths();
             var rootHub = NativeMethods.GetRootHub(spDevinfoDatas.First());
+
             Assert.NotEmpty(spDevinfoDatas);
         }
     }
