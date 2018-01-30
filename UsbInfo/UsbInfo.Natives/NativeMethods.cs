@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
@@ -20,7 +21,7 @@ namespace UsbInfo.Natives
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    public class NativeMethods
+    public partial class NativeMethods
     {
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern SafeFileHandle CreateFile(
@@ -204,6 +205,7 @@ namespace UsbInfo.Natives
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData
         );
 
+        // https://msdn.microsoft.com/en-us/library/windows/desktop/ms724872(v=vs.85).aspx
         const int BUFFER_SIZE = 2048;
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public struct SP_DEVICE_INTERFACE_DETAIL_DATA
@@ -239,8 +241,7 @@ namespace UsbInfo.Natives
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
             ref SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
             int DeviceInterfaceDetailDataSize,
-            ref int RequiredSize,
-            SP_DEVINFO_DATA DeviceInfoData
+            ref int RequiredSize, SP_DEVINFO_DATA DeviceInfoData
         );
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
@@ -267,49 +268,21 @@ namespace UsbInfo.Natives
         public static string GetRootHub(string hostController)
         {
             using (var handle = CreateFile(
-                hostController, 
-                GENERIC_WRITE, 
-                FILE_SHARE_WRITE, 
-                IntPtr.Zero, 
-                OPEN_EXISTING,
-                0,
-                IntPtr.Zero))
+                hostController, GENERIC_WRITE, FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero))
             {
-                int nBytesReturned;
-                USB_ROOT_HUB_NAME HubName = new USB_ROOT_HUB_NAME();
-                int nBytes = Marshal.SizeOf(HubName);
-                IntPtr pHubName = Marshal.AllocHGlobal(nBytes);
+                ThrowIfSetLastError(!handle.IsInvalid);
 
-                var buf = new byte[1];
-                int hubNameSize = 0;
-                DeviceIoControl(
-                    handle,
-                    IOCTL_USB_GET_ROOT_HUB_NAME,
-                    IntPtr.Zero,
-                    0,
-                    buf,
-                    nBytes,
-                    out hubNameSize,
-                    IntPtr.Zero);
-
-                var usbRootHubName2 = Marshal.PtrToStructure<USB_ROOT_HUB_NAME>(pHubName);
-
-
-                var allocHGlobal = Marshal.AllocHGlobal(hubNameSize);
-                DeviceIoControl(
-                    handle,
-                    IOCTL_USB_GET_ROOT_HUB_NAME,
-                    IntPtr.Zero,
-                    0,
-                    allocHGlobal,
-                    hubNameSize,
-                    out hubNameSize,
-                    IntPtr.Zero);
-
-                var usbRootHubName = Marshal.PtrToStructure<USB_ROOT_HUB_NAME>(allocHGlobal);
+                var usbRootHubName = DeviceIoControlInvoker.Invoke<USB_ROOT_HUB_NAME>(handle, IOCTL_USB_GET_ROOT_HUB_NAME);
+                return usbRootHubName.RootHubName;
             }
+        }
 
-            return "";
+        public static void ThrowIfSetLastError(bool result)
+        {
+            if (!result)
+            {
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            }
         }
 
         public static IEnumerable<SP_DEVINFO_DATA> HostControllers()
@@ -321,7 +294,7 @@ namespace UsbInfo.Natives
             {
                 var deviceInfo = new SP_DEVINFO_DATA();
                 deviceInfo.cbSize = Marshal.SizeOf(deviceInfo);
-                for (int deviceInfoIndex = 0;
+                for (int deviceInfoIndex = 0; 
                     SetupDiEnumDeviceInfo(
                         hostHandles, deviceInfoIndex, ref deviceInfo);
                     deviceInfoIndex++)
