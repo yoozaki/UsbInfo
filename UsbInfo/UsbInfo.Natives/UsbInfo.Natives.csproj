@@ -40,9 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="HGlobal.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="NativeMethods.HGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DeviceIoControlInvoker.cs" />
     <Compile Include="SafeDeviceHandle.cs" />
