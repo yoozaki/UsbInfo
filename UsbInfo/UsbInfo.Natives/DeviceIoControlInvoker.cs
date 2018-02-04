@@ -17,17 +17,24 @@ namespace UsbInfo.Natives
             }
         }
 
-        public static T Invoke<T>(SafeFileHandle handle, int ioControlCode, T inputObject) where T : struct
+        public static T Invoke<T>(SafeFileHandle handle, int ioControlCode, T inputAndOutputStruct) where T : struct
         {
-            using (var input = new NativeMethods.HGlobal<T>(inputObject))
-            using (var output = new NativeMethods.HGlobal(GetActualSize<T>(handle, ioControlCode)))
+            using (var inputAndOutputPtr = new NativeMethods.HGlobal<T>(inputAndOutputStruct))
             {
                 NativeMethods.ThrowIfSetLastError(NativeMethods.DeviceIoControl(
-                    handle, ioControlCode, input.Value, input.Size, output.Value, output.Size, out var _, IntPtr.Zero));
-                return Marshal.PtrToStructure<T>(output.Value);
+                    handle, ioControlCode, inputAndOutputPtr.Value, inputAndOutputPtr.Size, 
+                    inputAndOutputPtr.Value, inputAndOutputPtr.Size, out var _, IntPtr.Zero));
+                return Marshal.PtrToStructure<T>(inputAndOutputPtr.Value);
             }
         }
 
+        private static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode, NativeMethods.HGlobal<T> inputObject) where T : struct
+        {
+            var output = new byte[Marshal.SizeOf<T>()*3];
+            NativeMethods.ThrowIfSetLastError(NativeMethods.DeviceIoControl(
+                handle, ioControlCode, inputObject.Value, inputObject.Size, inputObject.Value, inputObject.Size, out var actualSize, IntPtr.Zero));
+            return actualSize;
+        }
         private static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode) where T : struct
         {
             var output = new byte[Marshal.SizeOf<T>()];
