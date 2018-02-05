@@ -10,7 +10,7 @@ namespace UsbInfo.Natives
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    public partial class NativeMethods
+    public class NativeMethods
     {
         public const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x220448;
         public const int IOCTL_USB_GET_NODE_INFORMATION = 0x220408;
@@ -264,6 +264,7 @@ namespace UsbInfo.Natives
             int PropertyBufferSize,
             ref int RequiredSize
         );
+
 
         public static string GetRootHub(string hostController)
         {

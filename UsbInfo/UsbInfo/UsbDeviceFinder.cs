@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using UsbInfo.Natives;
+using UsbInfo.Types;
 
 namespace UsbInfo
 {

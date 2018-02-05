@@ -23,7 +23,7 @@ namespace UsbInfo.Natives
 
     public class HGlobal : IDisposable
     {
-        [DllImport("Kernel32.dll", EntryPoint = "RtlZeroMemory", SetLastError = false)]
+        [DllImport("kernel32.dll", EntryPoint = "RtlZeroMemory", SetLastError = false)]
         static extern void ZeroMemory(IntPtr dest, IntPtr size);
 
         public int Size { get; }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using UsbInfo.Natives;
 using Xunit;
 
-namespace UsbInfo.Natives.Tests
+namespace UsbInfo.Tests
 {
     public class UnitTest1
     {
