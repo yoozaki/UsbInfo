@@ -7,10 +7,10 @@
 
         public HostController(
             string hostControllerPath,
-            string rootHubPath)
+            string rootHubName)
         {
             HostControllerPath = hostControllerPath;
-            RootHubPath = rootHubPath;
+            RootHubPath = @"\\.\" + rootHubName;
         }
     }
 }

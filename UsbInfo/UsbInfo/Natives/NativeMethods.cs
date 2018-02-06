@@ -93,7 +93,7 @@ namespace UsbInfo.Natives
             public string DevicePath;
         }
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        struct USB_NODE_CONNECTION_NAME
+        internal struct USB_NODE_CONNECTION_NAME
         {
             public int ConnectionIndex;
             public int ActualLength;
@@ -102,7 +102,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        struct USB_NODE_CONNECTION_DRIVERKEY_NAME
+        internal struct USB_NODE_CONNECTION_DRIVERKEY_NAME
         {
             public int ConnectionIndex;
             public int ActualLength;
@@ -111,7 +111,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        struct USB_ROOT_HUB_NAME
+        internal struct USB_ROOT_HUB_NAME
         {
             public int ActualLength;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
@@ -119,20 +119,20 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct USB_NODE_INFORMATION
+        internal struct USB_NODE_INFORMATION
         {
             public int NodeType;
             public USB_HUB_INFORMATION HubInformation;
         }
         [StructLayout(LayoutKind.Sequential)]
-        struct USB_HUB_INFORMATION
+        internal struct USB_HUB_INFORMATION
         {
             public USB_HUB_DESCRIPTOR HubDescriptor;
             public byte HubIsBusPowered;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct USB_HUB_DESCRIPTOR
+        internal struct USB_HUB_DESCRIPTOR
         {
             public byte bDescriptorLength;
             public byte bDescriptorType;

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using UsbInfo.Types;
 
 namespace UsbInfo.Types
 {
-    public class UsbHub : IUsbHub
+    public class UsbRootHub : IUsbRootHub
     {
         public int ProductId { get; }
         public int VendorId { get; }
@@ -14,6 +13,5 @@ namespace UsbInfo.Types
         public int CurrentUsbSpeed { get; }
         public int PortNumber { get; }
         public IEnumerable<IUsbDevice> ConnectedDevices { get; }
-        public IUsbNode Parent { get; }
     }
 }

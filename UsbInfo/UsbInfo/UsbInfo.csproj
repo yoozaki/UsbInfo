@@ -40,14 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factoryes\HostControllerFactory.cs" />
+    <Compile Include="Factoryes\RootHubFactory.cs" />
     <Compile Include="Natives\DeviceIoControlInvoker.cs" />
     <Compile Include="Natives\HGlobal.cs" />
     <Compile Include="Types\HostController.cs" />
     <Compile Include="Types\IUsbDevice.cs" />
     <Compile Include="Natives\NativeMethods.cs" />
     <Compile Include="Natives\SafeDeviceHandle.cs" />
+    <Compile Include="Types\IUsbHub.cs" />
+    <Compile Include="Types\IUsbNode.cs" />
+    <Compile Include="Types\IUsbRootHub.cs" />
+    <Compile Include="Types\IUsbRootNode.cs" />
     <Compile Include="Types\UsbDevice.cs" />
     <Compile Include="Types\UsbHub.cs" />
+    <Compile Include="Types\UsbRootHub.cs" />
     <Compile Include="UsbDeviceFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
