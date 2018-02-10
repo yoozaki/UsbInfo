@@ -12,31 +12,31 @@ namespace UsbInfo.Natives
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
     public class NativeMethods
     {
-        public const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x220448;
-        public const int IOCTL_USB_GET_NODE_INFORMATION = 0x220408;
-        public const int IOCTL_USB_GET_ROOT_HUB_NAME = 0x220408;
-        public const int IOCTL_USB_GET_NODE_CONNECTION_NAME = 0x220414;
-        public const int IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME = 0x220420;
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x220448;
+        internal const int IOCTL_USB_GET_NODE_INFORMATION = 0x220408;
+        internal const int IOCTL_USB_GET_ROOT_HUB_NAME = 0x220408;
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_NAME = 0x220414;
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME = 0x220420;
 
         // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-device
-        public static string GUID_DEVINTERFACE_USB_DEVICE = "A5DCBF10-6530-11D2-901F-00C04FB951ED";
+        internal static string GUID_DEVINTERFACE_USB_DEVICE = "A5DCBF10-6530-11D2-901F-00C04FB951ED";
 
         // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-host-controller
-        public static string GUID_DEVINTERFACE_USB_HOST_CONTROLLER = "3ABF6F2D-71C4-462A-8A92-1E6861E6AF27";
+        internal static string GUID_DEVINTERFACE_USB_HOST_CONTROLLER = "3ABF6F2D-71C4-462A-8A92-1E6861E6AF27";
 
         // we use registry value. see https://msdn.microsoft.com/en-us/library/windows/desktop/ms724872(v=vs.85).aspx
-        const int BUFFER_SIZE = 2048;
+        internal const int BUFFER_SIZE = 2048;
 
-        public const int DIGCF_PRESENT = 0x00000002;
-        public const int DIGCF_DEVICEINTERFACE = 0x00000010;
+        internal const int DIGCF_PRESENT = 0x00000002;
+        internal const int DIGCF_DEVICEINTERFACE = 0x00000010;
 
-        public const int GENERIC_WRITE = 0x40000000;
-        public const int FILE_SHARE_READ = 0x1;
-        public const int FILE_SHARE_WRITE = 0x2;
-        public const int OPEN_EXISTING = 0x3;
+        internal const int GENERIC_WRITE = 0x40000000;
+        internal const int FILE_SHARE_READ = 0x1;
+        internal const int FILE_SHARE_WRITE = 0x2;
+        internal const int OPEN_EXISTING = 0x3;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct USB_DEVICE_DESCRIPTOR
+        internal struct USB_DEVICE_DESCRIPTOR
         {
             public byte bLength;
             public byte bDescriptorType;
@@ -55,7 +55,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct USB_NODE_CONNECTION_INFORMATION_EX
+        internal struct USB_NODE_CONNECTION_INFORMATION_EX
         {
             public int ConnectionIndex;
             public USB_DEVICE_DESCRIPTOR DeviceDescriptor;
@@ -68,7 +68,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct SP_DEVINFO_DATA
+        internal struct SP_DEVINFO_DATA
         {
             public int cbSize;
             public Guid ClassGuid;
@@ -77,7 +77,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct SP_DEVICE_INTERFACE_DATA
+        internal struct SP_DEVICE_INTERFACE_DATA
         {
             public int cbSize;
             public Guid InterfaceClassGuid;
@@ -86,7 +86,7 @@ namespace UsbInfo.Natives
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        public struct SP_DEVICE_INTERFACE_DETAIL_DATA
+        internal struct SP_DEVICE_INTERFACE_DETAIL_DATA
         {
             public int cbSize;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
@@ -145,7 +145,7 @@ namespace UsbInfo.Natives
         }
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern SafeFileHandle CreateFile(
+        internal static extern SafeFileHandle CreateFile(
             string lpFileName,
             int dwDesiredAccess,
             int dwShareMode,
@@ -156,7 +156,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool DeviceIoControl(
+        internal static extern bool DeviceIoControl(
             SafeFileHandle hDevice,
             int dwIoControlCode,
             IntPtr lpInBuffer,
@@ -168,7 +168,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool DeviceIoControl(
+        internal static extern bool DeviceIoControl(
             SafeFileHandle hDevice,
             int dwIoControlCode,
             IntPtr lpInBuffer,
@@ -180,7 +180,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool SetupDiOpenDeviceInfo(
+        internal static extern bool SetupDiOpenDeviceInfo(
             SafeDeviceHandle DeviceInfoSet,
             string DeviceInstanceId,
             IntPtr hwndParent,
@@ -189,7 +189,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", SetLastError = true)]
-        public static extern SafeDeviceHandle SetupDiGetClassDevs(
+        internal static extern SafeDeviceHandle SetupDiGetClassDevs(
             ref Guid classGuid,
             IntPtr enumerator,
             IntPtr hwndParent,
@@ -197,7 +197,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", SetLastError = true)]
-        public static extern SafeDeviceHandle SetupDiGetClassDevs(
+        internal static extern SafeDeviceHandle SetupDiGetClassDevs(
             IntPtr classGuid,
             IntPtr enumerator,
             IntPtr hwndParent,
@@ -205,19 +205,19 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll")]
-        public static extern bool SetupDiDestroyDeviceInfoList(
+        internal static extern bool SetupDiDestroyDeviceInfoList(
             IntPtr deviceInfoSet
         );
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool SetupDiEnumDeviceInfo(
+        internal static extern bool SetupDiEnumDeviceInfo(
             SafeDeviceHandle DeviceInfoSet,
             int MemberIndex,
             ref SP_DEVINFO_DATA deviceData
         );
 
         [DllImport("setupapi.dll")]
-        public static extern bool SetupDiEnumDeviceInterfaces(
+        internal static extern bool SetupDiEnumDeviceInterfaces(
             SafeDeviceHandle DeviceInfoSet,
             IntPtr DeviceInfoData, 
             ref Guid InterfaceClassGuid,
@@ -226,7 +226,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern bool SetupDiGetDeviceInterfaceDetail(
+        internal static extern bool SetupDiGetDeviceInterfaceDetail(
             SafeDeviceHandle DeviceInfoSet,
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
             IntPtr DeviceInterfaceDetailData,
@@ -236,7 +236,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern bool SetupDiGetDeviceInterfaceDetail(
+        internal static extern bool SetupDiGetDeviceInterfaceDetail(
             SafeDeviceHandle DeviceInfoSet,
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
             ref SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
@@ -246,7 +246,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        public static extern bool SetupDiGetDeviceInterfaceDetail(
+        internal static extern bool SetupDiGetDeviceInterfaceDetail(
             SafeDeviceHandle DeviceInfoSet,
             ref SP_DEVICE_INTERFACE_DATA DeviceInterfaceData,
             ref SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
@@ -255,7 +255,7 @@ namespace UsbInfo.Natives
         );
 
         [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool SetupDiGetDeviceRegistryProperty(
+        internal static extern bool SetupDiGetDeviceRegistryProperty(
             SafeDeviceHandle DeviceInfoSet,
             ref SP_DEVINFO_DATA DeviceInfoData,
             int iProperty,
@@ -265,43 +265,7 @@ namespace UsbInfo.Natives
             ref int RequiredSize
         );
 
-
-        public static string GetRootHub(string hostController)
-        {
-            using (var hostHanle = CreateFile(
-                hostController, GENERIC_WRITE, FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero))
-            {
-                ThrowIfSetLastError(!hostHanle.IsInvalid);
-
-                var usbRootHubName = DeviceIoControlInvoker.Invoke<USB_ROOT_HUB_NAME>(hostHanle, IOCTL_USB_GET_ROOT_HUB_NAME);
-                var rootHubName = @"\\.\" + usbRootHubName.RootHubName;
-                using (var hubHandle = CreateFile(
-                    rootHubName, GENERIC_WRITE, FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero)) {
-                    var nodeInformation = DeviceIoControlInvoker
-                        .Invoke(hubHandle, IOCTL_USB_GET_NODE_INFORMATION, new USB_NODE_INFORMATION {NodeType = 0});
-
-                    for (int portNo = 1; portNo < nodeInformation.HubInformation.HubDescriptor.bNumberOfPorts; portNo++)
-                    {
-                        var deviceIoControl = DeviceIoControlInvoker.Invoke(
-                            hubHandle, IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
-                            new USB_NODE_CONNECTION_INFORMATION_EX {ConnectionIndex = portNo});
-                        if (deviceIoControl.ConnectionIndex ==0) continue;
-
-                        var nodeConnectionName = DeviceIoControlInvoker.Invoke(
-                            hubHandle, IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME,
-                            new USB_NODE_CONNECTION_DRIVERKEY_NAME() {ConnectionIndex = portNo});
-
-                        var invoke = DeviceIoControlInvoker.Invoke(
-                            hubHandle, IOCTL_USB_GET_NODE_CONNECTION_NAME,
-                            new USB_NODE_CONNECTION_NAME() { ConnectionIndex = portNo });
-                    }
-                }
-
-                return rootHubName;
-            }
-        }
-
-        public static void ThrowIfSetLastError(bool result)
+        internal static void ThrowIfSetLastError(bool result)
         {
             if (!result)
             {
@@ -309,7 +273,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        public static IEnumerable<SP_DEVINFO_DATA> HostControllers()
+        internal static IEnumerable<SP_DEVINFO_DATA> HostControllers()
         {
             var guid = new Guid(GUID_DEVINTERFACE_USB_HOST_CONTROLLER);
             using (var hostHandles = SetupDiGetClassDevs(
@@ -328,7 +292,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        public static IEnumerable<string> HostControllerPaths()
+        internal static IEnumerable<string> HostControllerPaths()
         {
             var classGuid = new Guid(GUID_DEVINTERFACE_USB_HOST_CONTROLLER);
             foreach (var devicePath in EnumerableDevicePaths(classGuid))
@@ -337,7 +301,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        private static IEnumerable<string> EnumerableDevicePaths(Guid classGuid)
+        internal static IEnumerable<string> EnumerableDevicePaths(Guid classGuid)
         {
             using (var hostHandles = SetupDiGetClassDevs(
                 ref classGuid,
@@ -374,7 +338,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        private static int GetDeviceInterfaceDetailDataSize(SafeDeviceHandle hostHandles,
+        internal static int GetDeviceInterfaceDetailDataSize(SafeDeviceHandle hostHandles,
             ref SP_DEVICE_INTERFACE_DATA deviceInstace)
         {
             int deviceInterfaceDetailDataSize = 0;

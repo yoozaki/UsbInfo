@@ -1,6 +1,6 @@
-﻿namespace UsbInfo.Types
+﻿namespace UsbInfo.Models
 {
-    public class HostController
+    internal class HostController
     {
         public string RootHubPath { get; }
         public string HostControllerPath { get; }

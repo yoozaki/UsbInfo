@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace UsbInfo.Natives
 {
-    public class HGlobal<T> : IDisposable where T : struct
+    internal class HGlobal<T> : IDisposable where T : struct
     {
         public int Size { get; }
         public IntPtr Value { get; }
@@ -21,7 +21,7 @@ namespace UsbInfo.Natives
         }
     }
 
-    public class HGlobal : IDisposable
+    internal class HGlobal : IDisposable
     {
         [DllImport("kernel32.dll", EntryPoint = "RtlZeroMemory", SetLastError = false)]
         static extern void ZeroMemory(IntPtr dest, IntPtr size);

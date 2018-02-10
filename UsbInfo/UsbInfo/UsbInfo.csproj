@@ -40,23 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factoryes\HostControllerFactory.cs" />
-    <Compile Include="Factoryes\RootHubFactory.cs" />
+    <Compile Include="Factoryes\HostControllerEnumerator.cs" />
+    <Compile Include="Factoryes\UsbDeviceEnumerator.cs" />
+    <Compile Include="Interfaces\IUsbDevice.cs" />
+    <Compile Include="Interfaces\IUsbHub.cs" />
+    <Compile Include="Interfaces\IUsbRootHub.cs" />
+    <Compile Include="Interfaces\IUsbNode.cs" />
     <Compile Include="Natives\DeviceIoControlInvoker.cs" />
     <Compile Include="Natives\HGlobal.cs" />
-    <Compile Include="Types\HostController.cs" />
-    <Compile Include="Types\IUsbDevice.cs" />
+    <Compile Include="Models\HostController.cs" />
     <Compile Include="Natives\NativeMethods.cs" />
     <Compile Include="Natives\SafeDeviceHandle.cs" />
-    <Compile Include="Types\IUsbHub.cs" />
-    <Compile Include="Types\IUsbNode.cs" />
-    <Compile Include="Types\IUsbRootHub.cs" />
-    <Compile Include="Types\IUsbRootNode.cs" />
-    <Compile Include="Types\UsbDevice.cs" />
-    <Compile Include="Types\UsbHub.cs" />
-    <Compile Include="Types\UsbRootHub.cs" />
-    <Compile Include="UsbDeviceFinder.cs" />
+    <Compile Include="Models\UsbDevice.cs" />
+    <Compile Include="Models\UsbHub.cs" />
+    <Compile Include="Models\UsbRootHub.cs" />
+    <Compile Include="UsbInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

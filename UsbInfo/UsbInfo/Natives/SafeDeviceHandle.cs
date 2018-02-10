@@ -2,7 +2,7 @@
 
 namespace UsbInfo.Natives
 {
-    public class SafeDeviceHandle : SafeHandleZeroOrMinusOneIsInvalid
+    internal class SafeDeviceHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         public SafeDeviceHandle()
             : base(true)

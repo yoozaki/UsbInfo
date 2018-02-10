@@ -4,9 +4,9 @@ using Microsoft.Win32.SafeHandles;
 
 namespace UsbInfo.Natives
 {
-    public class DeviceIoControlInvoker
+    internal class DeviceIoControlInvoker
     {
-        public static T Invoke<T>(SafeFileHandle handle, int ioControlCode) where T : struct
+        internal static T Invoke<T>(SafeFileHandle handle, int ioControlCode) where T : struct
         {
             using (var output = new HGlobal(GetActualSize<T>(handle, ioControlCode)))
             {
@@ -16,7 +16,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        public static T Invoke<T>(SafeFileHandle handle, int ioControlCode, T inputAndOutputStruct) where T : struct
+        internal static T Invoke<T>(SafeFileHandle handle, int ioControlCode, T inputAndOutputStruct) where T : struct
         {
             using (var inputAndOutputPtr = new HGlobal<T>(inputAndOutputStruct))
             {
@@ -27,7 +27,7 @@ namespace UsbInfo.Natives
             }
         }
 
-        private static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode) where T : struct
+        internal static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode) where T : struct
         {
             var output = new byte[Marshal.SizeOf<T>()];
             NativeMethods.ThrowIfSetLastError(NativeMethods.DeviceIoControl(

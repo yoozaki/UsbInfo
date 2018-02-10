@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UsbInfo.Models;
 using UsbInfo.Natives;
-using UsbInfo.Types;
 using static UsbInfo.Natives.NativeMethods;
 
 namespace UsbInfo.Factoryes
 {
-    public static class HostControllerFactory
+    public class HostControllerEnumerator
     {
-        public static HostController Create(string hostControllerPath)
+        internal static IEnumerable<HostController> Enumerable()
+        {
+            return HostControllerPaths().Select(CreateHostController);
+        }
+
+        private static HostController CreateHostController(string hostControllerPath)
         {
             using (var hostHanle = CreateFile(
                 hostControllerPath, GENERIC_WRITE, FILE_SHARE_WRITE, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero))
