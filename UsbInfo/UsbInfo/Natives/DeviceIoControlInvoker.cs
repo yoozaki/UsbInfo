@@ -27,12 +27,16 @@ namespace UsbInfo.Natives
             }
         }
 
-        internal static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode) where T : struct
+        private static int GetActualSize<T>(SafeFileHandle handle, int ioControlCode) where T : struct
         {
             var output = new byte[Marshal.SizeOf<T>()];
-            NativeMethods.ThrowIfSetLastError(NativeMethods.DeviceIoControl(
-                handle, ioControlCode, IntPtr.Zero, 0, output, output.Length, out var actualSize, IntPtr.Zero));
-            return actualSize;
+            var gcHandle = GCHandle.Alloc(output, GCHandleType.Pinned);
+            using (Disposable.Create(() => gcHandle.Free()))
+            {
+                NativeMethods.ThrowIfSetLastError(NativeMethods.DeviceIoControl(
+                    handle, ioControlCode, IntPtr.Zero, 0, output, output.Length, out var actualSize, IntPtr.Zero));
+                return actualSize;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UsbInfo.Factoryes;
+using UsbInfo.Factories;
 using UsbInfo.Interfaces;
 using UsbInfo.Models;
 
@@ -10,19 +10,36 @@ namespace UsbInfo
     {
         public static IEnumerable<IUsbRootHub> RootHubs()
         {
-            return HostControllerEnumerator
-                .Enumerable()
+            return HostControllerFactory
+                .Create()
                 .Select(host => new UsbRootHub(host.RootHubPath));
         }
 
         public static IEnumerable<IUsbDevice> Devices()
         {
-            return RootHubs().SelectMany(hub => hub.ConnectedDevices);
+            return Devices(RootHubs().SelectMany(hub => hub.ConnectedDevices));
+        }
+
+        public static IEnumerable<IUsbDevice> Devices(short vid)
+        {
+            return Devices().Where(device => device.VendorId == vid);
         }
 
         public static IEnumerable<IUsbDevice> Devices(short vid, short pid)
         {
-            return Devices().Where(device => device.VendorId == vid && device.ProductId == pid);
+            return Devices(vid).Where(device => device.ProductId == pid);
+        }
+
+        private static IEnumerable<IUsbDevice> Devices(IEnumerable<IUsbDevice> devices)
+        {
+            foreach (var device in devices)
+            {
+                yield return device;
+                foreach (var usbDevice in Devices(device.ConnectedDevices))
+                {
+                    yield return usbDevice;
+                }
+            }
         }
     }
 }

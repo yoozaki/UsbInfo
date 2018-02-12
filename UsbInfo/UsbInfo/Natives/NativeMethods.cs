@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32.SafeHandles;
 
 namespace UsbInfo.Natives
@@ -10,44 +11,50 @@ namespace UsbInfo.Natives
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Local")]
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Local")]
-    public class NativeMethods
+    public partial class NativeMethods
     {
-        internal const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x220448;
-        internal const int IOCTL_USB_GET_NODE_INFORMATION = 0x220408;
-        internal const int IOCTL_USB_GET_ROOT_HUB_NAME = 0x220408;
-        internal const int IOCTL_USB_GET_NODE_CONNECTION_NAME = 0x220414;
-        internal const int IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME = 0x220420;
-
-        // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-device
-        internal static string GUID_DEVINTERFACE_USB_DEVICE = "A5DCBF10-6530-11D2-901F-00C04FB951ED";
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX = 0x00220448;
+        internal const int IOCTL_USB_GET_NODE_INFORMATION = 0x00220408;
+        internal const int IOCTL_USB_GET_ROOT_HUB_NAME = 0x00220408;
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_NAME = 0x00220414;
+        internal const int IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME = 0x00220420;
 
         // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-host-controller
-        internal static string GUID_DEVINTERFACE_USB_HOST_CONTROLLER = "3ABF6F2D-71C4-462A-8A92-1E6861E6AF27";
+        internal static readonly Guid GUID_DEVINTERFACE_USB_HOST_CONTROLLER = new Guid("3ABF6F2D-71C4-462A-8A92-1E6861E6AF27");
+
+        // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-device
+        internal static readonly Guid GUID_DEVINTERFACE_USB_DEVICE = new Guid("A5DCBF10-6530-11D2-901F-00C04FB951ED");
+
+        // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-hub
+        internal static readonly Guid GUID_DEVINTERFACE_USB_HUB = new Guid("F18A0E88-C30C-11D0-8815-00A0C906BED8");
 
         // we use registry value. see https://msdn.microsoft.com/en-us/library/windows/desktop/ms724872(v=vs.85).aspx
         internal const int BUFFER_SIZE = 2048;
 
-        internal const int DIGCF_PRESENT = 0x00000002;
-        internal const int DIGCF_DEVICEINTERFACE = 0x00000010;
+        internal const int SPDRP_DEVICEDESC = 0x0000_0000;
+        internal const int SPDRP_DRIVER = 0x0000_0009; 
 
-        internal const int GENERIC_WRITE = 0x40000000;
-        internal const int FILE_SHARE_READ = 0x1;
-        internal const int FILE_SHARE_WRITE = 0x2;
-        internal const int OPEN_EXISTING = 0x3;
+        internal const int DIGCF_PRESENT = 0x0000_0002;
+        internal const int DIGCF_DEVICEINTERFACE = 0x0000_0010;
+
+        internal const int GENERIC_WRITE = 0x4000_0000;
+        internal const int FILE_SHARE_READ = 0x0000_0001;
+        internal const int FILE_SHARE_WRITE = 0x000_0002;
+        internal const int OPEN_EXISTING = 0x0000_0003;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct USB_DEVICE_DESCRIPTOR
         {
             public byte bLength;
             public byte bDescriptorType;
-            public short bcdUSB;
+            public ushort bcdUSB;
             public byte bDeviceClass;
             public byte bDeviceSubClass;
             public byte bDeviceProtocol;
             public byte bMaxPacketSize0;
-            public short idVendor;
-            public short idProduct;
-            public short bcdDevice;
+            public ushort idVendor;
+            public ushort idProduct;
+            public ushort bcdDevice;
             public byte iManufacturer;
             public byte iProduct;
             public byte iSerialNumber;
@@ -57,14 +64,14 @@ namespace UsbInfo.Natives
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct USB_NODE_CONNECTION_INFORMATION_EX
         {
-            public int ConnectionIndex;
+            public uint ConnectionIndex;
             public USB_DEVICE_DESCRIPTOR DeviceDescriptor;
             public byte CurrentConfigurationValue;
             public byte Speed;
             public byte DeviceIsHub;
-            public short DeviceAddress;
-            public int NumberOfOpenPipes;
-            public int ConnectionStatus;
+            public ushort DeviceAddress;
+            public uint NumberOfOpenPipes;
+            public uint ConnectionStatus;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -72,7 +79,7 @@ namespace UsbInfo.Natives
         {
             public int cbSize;
             public Guid ClassGuid;
-            public int DevInst;
+            public uint DevInst;
             public IntPtr Reserved;
         }
 
@@ -81,7 +88,7 @@ namespace UsbInfo.Natives
         {
             public int cbSize;
             public Guid InterfaceClassGuid;
-            public int Flags;
+            public uint Flags;
             public IntPtr Reserved;
         }
 
@@ -92,20 +99,12 @@ namespace UsbInfo.Natives
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
             public string DevicePath;
         }
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-        internal struct USB_NODE_CONNECTION_NAME
-        {
-            public int ConnectionIndex;
-            public int ActualLength;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
-            public string NodeName;
-        }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         internal struct USB_NODE_CONNECTION_DRIVERKEY_NAME
         {
-            public int ConnectionIndex;
-            public int ActualLength;
+            public uint ConnectionIndex;
+            public uint ActualLength;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
             public string DriverKeyName;
         }
@@ -113,7 +112,7 @@ namespace UsbInfo.Natives
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         internal struct USB_ROOT_HUB_NAME
         {
-            public int ActualLength;
+            public uint ActualLength;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = BUFFER_SIZE)]
             public string RootHubName;
         }
@@ -242,7 +241,7 @@ namespace UsbInfo.Natives
             ref SP_DEVICE_INTERFACE_DETAIL_DATA DeviceInterfaceDetailData,
             int DeviceInterfaceDetailDataSize,
             ref int RequiredSize,
-            IntPtr DeviceInfoData
+            ref SP_DEVINFO_DATA DeviceInfoData
         );
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
@@ -254,13 +253,13 @@ namespace UsbInfo.Natives
             ref int RequiredSize, SP_DEVINFO_DATA DeviceInfoData
         );
 
-        [DllImport("setupapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
         internal static extern bool SetupDiGetDeviceRegistryProperty(
             SafeDeviceHandle DeviceInfoSet,
             ref SP_DEVINFO_DATA DeviceInfoData,
             int iProperty,
             ref int PropertyRegDataType,
-            byte[] PropertyBuffer,
+            StringBuilder PropertyBuffer,
             int PropertyBufferSize,
             ref int RequiredSize
         );
@@ -275,7 +274,7 @@ namespace UsbInfo.Natives
 
         internal static IEnumerable<SP_DEVINFO_DATA> HostControllers()
         {
-            var guid = new Guid(GUID_DEVINTERFACE_USB_HOST_CONTROLLER);
+            var guid = GUID_DEVINTERFACE_USB_HOST_CONTROLLER;
             using (var hostHandles = SetupDiGetClassDevs(
                 ref guid, IntPtr.Zero, IntPtr.Zero,
                 DIGCF_PRESENT | DIGCF_DEVICEINTERFACE))
@@ -294,14 +293,14 @@ namespace UsbInfo.Natives
 
         internal static IEnumerable<string> HostControllerPaths()
         {
-            var classGuid = new Guid(GUID_DEVINTERFACE_USB_HOST_CONTROLLER);
-            foreach (var devicePath in EnumerableDevicePaths(classGuid))
+            var classGuid = GUID_DEVINTERFACE_USB_HOST_CONTROLLER;
+            foreach (var deviceMetaData in EnumerableDeviceMetaData(classGuid))
             {
-                yield return devicePath;
+                yield return deviceMetaData.DevicePath;
             }
         }
 
-        internal static IEnumerable<string> EnumerableDevicePaths(Guid classGuid)
+        internal static IEnumerable<DeviceMetaData> EnumerableDeviceMetaData(Guid classGuid)
         {
             using (var hostHandles = SetupDiGetClassDevs(
                 ref classGuid,
@@ -324,21 +323,47 @@ namespace UsbInfo.Natives
                     {
                         cbSize = IntPtr.Size == 4 ? 4 + Marshal.SystemDefaultCharSize : 8
                     };
+
+                    var deviceInfoData = new SP_DEVINFO_DATA {cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>()};
                     if (SetupDiGetDeviceInterfaceDetail(
                         hostHandles,
                         ref deviceInstace,
                         ref deviceInstaceDetail,
                         deviceInterfaceDetailDataSize,
                         ref deviceInterfaceDetailDataSize,
-                        IntPtr.Zero))
+                        ref deviceInfoData))
                     {
-                        yield return deviceInstaceDetail.DevicePath;
+                        yield return new DeviceMetaData(
+                            GetDeviceProperty(SPDRP_DEVICEDESC, hostHandles, deviceInfoData),
+                            GetDeviceProperty(SPDRP_DRIVER, hostHandles, deviceInfoData), 
+                            deviceInstaceDetail.DevicePath);
                     }
                 }
             }
         }
 
-        internal static int GetDeviceInterfaceDetailDataSize(SafeDeviceHandle hostHandles,
+        private static string GetDeviceProperty(
+            int propertyId,
+            SafeDeviceHandle hostHandles, 
+            SP_DEVINFO_DATA deviceInfoData)
+        {
+            var propertyBuffer = new StringBuilder(BUFFER_SIZE);
+            int actualSize = 0;
+            int regType = 1;
+            SetupDiGetDeviceRegistryProperty(
+                hostHandles,
+                ref deviceInfoData,
+                propertyId,
+                ref regType,
+                propertyBuffer,
+                propertyBuffer.Capacity,
+                ref actualSize);
+
+            return propertyBuffer.ToString();
+        }
+
+        internal static int GetDeviceInterfaceDetailDataSize(
+            SafeDeviceHandle hostHandles,
             ref SP_DEVICE_INTERFACE_DATA deviceInstace)
         {
             int deviceInterfaceDetailDataSize = 0;

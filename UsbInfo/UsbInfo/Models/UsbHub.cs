@@ -1,40 +1,39 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UsbInfo.Factoryes;
+using UsbInfo.Extensions;
+using UsbInfo.Factories;
 using UsbInfo.Interfaces;
 
 namespace UsbInfo.Models
 {
     internal class UsbHub : IUsbHub
     {
-        public UsbHub(
-            int portNo,
-            short vendorId,
-            short productId,
-            byte supportedUsbSpeed,
-            short currentUsbSpeed,
-            string hubDevicePath,
-            IUsbNode parent)
-        {
-            var usbDevices = UsbDeviceEnumerator.EnumrateUsbDevices(hubDevicePath, this);
-
-            PortNumber = usbDevices.Count;
-            PortNo = portNo;
-            VendorId = vendorId;
-            ProductId = productId;
-            SupportedUsbSpeed = supportedUsbSpeed;
-            CurrentUsbSpeed = currentUsbSpeed;
-            ConnectedDevices = usbDevices.Where(device => device.VendorId != 0).ToList();
-            Parent = parent;
-        }
-
         public int PortNumber { get; }
-        public int PortNo { get; }
-        public short VendorId { get; }
-        public short ProductId { get; }
-        public byte SupportedUsbSpeed { get; }
-        public short CurrentUsbSpeed { get; }
-        public IReadOnlyCollection<IUsbDevice> ConnectedDevices { get; }
+        public uint PortNo { get; }
+        public ushort VendorId { get; }
+        public ushort ProductId { get; }
+        public UsbSupportSpeed SupportSpeed { get; }
+        public UsbDeviceType CurrentUsbDevice { get; }
+        public string DeviceDescription { get; }
+        public string DeviceKey { get; }
+        public string DevicePath { get; }
+        public IEnumerable<IUsbDevice> ConnectedDevices { get; }
         public IUsbNode Parent { get; }
+
+        public UsbHub(IUsbDevice usbDevice)
+        {
+            var childDevices = UsbDeviceListFactory.Create(usbDevice.DevicePath, this);
+            PortNumber = childDevices.Count;
+            ConnectedDevices = childDevices.NotOfType(typeof(UnConnectUsbDevice));
+
+            PortNo = usbDevice.PortNo;
+            VendorId = usbDevice.VendorId;
+            ProductId = usbDevice.ProductId;
+            SupportSpeed = usbDevice.SupportSpeed;
+            CurrentUsbDevice = usbDevice.CurrentUsbDevice;
+            DeviceKey = usbDevice.DeviceKey;
+            DevicePath = usbDevice.DevicePath;
+            DeviceDescription = usbDevice.DeviceDescription;
+            Parent = usbDevice.Parent;
+        }
     }
 }

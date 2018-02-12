@@ -5,6 +5,6 @@ namespace UsbInfo.Interfaces
     public interface IUsbNode
     {
         IUsbNode Parent { get; }
-        IReadOnlyCollection<IUsbDevice> ConnectedDevices { get; }
+        IEnumerable<IUsbDevice> ConnectedDevices { get; }
     }
 }
