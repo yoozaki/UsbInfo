@@ -20,12 +20,12 @@ namespace UsbInfo
             return Devices(RootHubs().SelectMany(hub => hub.ConnectedDevices));
         }
 
-        public static IEnumerable<IUsbDevice> Devices(short vid)
+        public static IEnumerable<IUsbDevice> Devices(ushort vid)
         {
             return Devices().Where(device => device.VendorId == vid);
         }
 
-        public static IEnumerable<IUsbDevice> Devices(short vid, short pid)
+        public static IEnumerable<IUsbDevice> Devices(ushort vid, ushort pid)
         {
             return Devices(vid).Where(device => device.ProductId == pid);
         }
