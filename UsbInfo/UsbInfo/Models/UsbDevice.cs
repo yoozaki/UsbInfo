@@ -40,5 +40,22 @@ namespace UsbInfo.Models
             DevicePath = devicePath;
             DeviceDescription = fridlyName;
         }
+
+        public UsbDevice(
+            UsbDevice usbDevice,
+            IEnumerable<UsbDevice> connectedDevices)
+            : this(
+                usbDevice.PortNo,
+                usbDevice.VendorId,
+                usbDevice.ProductId,
+                usbDevice.SupportSpeed,
+                usbDevice.CurrentUsbDevice,
+                usbDevice.DeviceKey,
+                usbDevice.DevicePath,
+                usbDevice.DeviceDescription,
+                usbDevice.Parent)
+        {
+            ConnectedDevices = connectedDevices;
+        }
     }
 }

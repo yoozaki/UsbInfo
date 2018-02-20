@@ -22,7 +22,7 @@ namespace UsbInfo.Factories
                 .Invoke(hubHandle, NativeMethods.IOCTL_USB_GET_NODE_INFORMATION, new NativeMethods.USB_NODE_INFORMATION { NodeType = 0 });
 
             var usbDevices = new List<IUsbDevice>();
-            var portNumber = nodeInformation.HubInformation.HubDescriptor.bNumberOfPorts;
+            var portNumber = nodeInformation.UsbNodeUnion.HubInformation.HubDescriptor.bNumberOfPorts;
             for (uint portNo = 1; portNo <= portNumber; portNo++)
             {
                 var usbDeviceFactory = AbstractUsbDeviceFactory.CreateFactory(hubHandle, portNo);
