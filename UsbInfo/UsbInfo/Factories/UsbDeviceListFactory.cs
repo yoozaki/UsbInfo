@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Win32.SafeHandles;
 using UsbInfo.Interfaces;
 using UsbInfo.Natives;
+using UsbInfo.Natives.Types;
 
 namespace UsbInfo.Factories
 {
@@ -19,7 +20,7 @@ namespace UsbInfo.Factories
         private static IReadOnlyList<IUsbDevice> Create(SafeFileHandle hubHandle, IUsbNode parentNode)
         {
             var nodeInformation = DeviceIoControlInvoker
-                .Invoke(hubHandle, NativeMethods.IOCTL_USB_GET_NODE_INFORMATION, new NativeMethods.USB_NODE_INFORMATION { NodeType = 0 });
+                .Invoke(hubHandle, NativeMethods.IOCTL_USB_GET_NODE_INFORMATION, new USB_NODE_INFORMATION { NodeType = 0 });
 
             var usbDevices = new List<IUsbDevice>();
             var portNumber = nodeInformation.UsbNodeUnion.HubInformation.HubDescriptor.bNumberOfPorts;

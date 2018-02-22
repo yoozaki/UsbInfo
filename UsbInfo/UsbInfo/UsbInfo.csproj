@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,19 +57,33 @@
     <Compile Include="Interfaces\IUsbRootHub.cs" />
     <Compile Include="Interfaces\IUsbNode.cs" />
     <Compile Include="Models\UnConnectUsbDevice.cs" />
+    <Compile Include="Natives\CrException.cs" />
+    <Compile Include="Natives\CrResult.cs" />
     <Compile Include="Natives\DeviceIoControlInvoker.cs" />
     <Compile Include="Natives\Disposable.cs" />
     <Compile Include="Natives\HGlobal.cs" />
     <Compile Include="Models\HostController.cs" />
     <Compile Include="Natives\NativeMethods.cs" />
     <Compile Include="Natives\DeviceMetaData.cs" />
+    <Compile Include="Natives\Types\USB_NODE_UNION.cs" />
     <Compile Include="Natives\SafeDeviceHandle.cs" />
     <Compile Include="Models\UsbDevice.cs" />
     <Compile Include="Models\UsbHub.cs" />
     <Compile Include="Models\UsbRootHub.cs" />
+    <Compile Include="Natives\Types\SP_DEVINFO_DATA.cs" />
+    <Compile Include="Natives\Types\USB_DEVICE_DESCRIPTOR.cs" />
+    <Compile Include="Natives\Types\USB_HUB_DESCRIPTOR.cs" />
+    <Compile Include="Natives\Types\USB_HUB_INFORMATION.cs" />
+    <Compile Include="Natives\Types\USB_MI_PARENT_INFORMATION.cs" />
+    <Compile Include="Natives\Types\USB_NODE_CONNECTION_DRIVERKEY_NAME.cs" />
+    <Compile Include="Natives\Types\USB_NODE_CONNECTION_INFORMATION_EX.cs" />
+    <Compile Include="Natives\Types\USB_NODE_INFORMATION.cs" />
+    <Compile Include="Natives\Types\USB_ROOT_HUB_NAME.cs" />
     <Compile Include="UsbInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

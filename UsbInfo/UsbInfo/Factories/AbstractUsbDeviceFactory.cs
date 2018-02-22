@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Win32.SafeHandles;
 using UsbInfo.Natives;
+using UsbInfo.Natives.Types;
 
 namespace UsbInfo.Factories
 {
@@ -10,7 +11,7 @@ namespace UsbInfo.Factories
         {
             var conneectInfomation = DeviceIoControlInvoker.Invoke(
                 hubHandle, NativeMethods.IOCTL_USB_GET_NODE_CONNECTION_INFORMATION_EX,
-                new NativeMethods.USB_NODE_CONNECTION_INFORMATION_EX { ConnectionIndex = portNo });
+                new USB_NODE_CONNECTION_INFORMATION_EX { ConnectionIndex = portNo });
 
             if (conneectInfomation.ConnectionIndex == 0)
             {

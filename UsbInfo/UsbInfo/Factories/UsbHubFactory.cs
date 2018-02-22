@@ -4,6 +4,7 @@ using UsbInfo.Extensions;
 using UsbInfo.Interfaces;
 using UsbInfo.Models;
 using UsbInfo.Natives;
+using UsbInfo.Natives.Types;
 using static UsbInfo.Natives.NativeMethods;
 
 namespace UsbInfo.Factories
