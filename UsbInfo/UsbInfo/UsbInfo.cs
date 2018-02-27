@@ -6,7 +6,7 @@ using UsbInfo.Models;
 
 namespace UsbInfo
 {
-    public class UsbInfo
+    public static class UsbInfo
     {
         public static IEnumerable<IUsbRootHub> RootHubs()
         {

@@ -5,10 +5,10 @@ using Xunit.Abstractions;
 
 namespace UsbInfo.Tests
 {
-    public class TestUsbInfo
+    public class UsbInfoTest
     {
         private readonly ITestOutputHelper _output;
-        public TestUsbInfo(ITestOutputHelper output)
+        public UsbInfoTest(ITestOutputHelper output)
         {
             _output = output;
         }
@@ -51,7 +51,7 @@ namespace UsbInfo.Tests
         [Fact]
         public void TestDeviceFromVidPid()
         {
-            var usbDevices = UsbInfo.Devices(0x8087);
+            var usbDevices = UsbInfo.Devices(0x8087, 0x0A2B);
             Assert.NotEmpty(usbDevices);
         }
     }

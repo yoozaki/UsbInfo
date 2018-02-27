@@ -5,7 +5,7 @@ namespace UsbInfo.Natives
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal enum CrResult
+    internal enum PnpConfigrationResult
     {
 
         CR_SUCCESS = (0x00000000),

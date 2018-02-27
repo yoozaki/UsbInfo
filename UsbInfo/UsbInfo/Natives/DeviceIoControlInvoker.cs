@@ -4,7 +4,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace UsbInfo.Natives
 {
-    internal class DeviceIoControlInvoker
+    internal static class DeviceIoControlInvoker
     {
         internal static T Invoke<T>(SafeFileHandle handle, int ioControlCode) where T : struct
         {

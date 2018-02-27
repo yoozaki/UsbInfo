@@ -14,9 +14,6 @@ namespace UsbInfo.Models
         public string DeviceKey { get; }
         public string DevicePath { get; }
         public IUsbNode Parent { get; }
-
-        // Not support composite device
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
         public IEnumerable<IUsbDevice> ConnectedDevices { get; } = new List<IUsbDevice>();
 
         public UsbDevice(

@@ -8,7 +8,7 @@ using UsbInfo.Natives.Types;
 
 namespace UsbInfo.Factories
 {
-    public class HostControllerFactory
+    public static class HostControllerFactory
     {
         internal static IEnumerable<HostController> Create()
         {

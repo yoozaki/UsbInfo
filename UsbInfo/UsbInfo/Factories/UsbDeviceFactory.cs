@@ -69,7 +69,7 @@ namespace UsbInfo.Factories
                 var miDevices = new List<UsbDevice> { CreateUsbMiDevice(devChild, usbDevice) };
                 while (true)
                 {
-                    if (CM_Get_Sibling(out var devSibling, devChild) != CrResult.CR_SUCCESS)
+                    if (CM_Get_Sibling(out var devSibling, devChild) != PnpConfigrationResult.CR_SUCCESS)
                     {
                         break;
                     }

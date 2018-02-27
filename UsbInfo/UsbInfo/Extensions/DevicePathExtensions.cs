@@ -1,5 +1,4 @@
-﻿using UsbInfo.Natives;
-using UsbInfo.Natives.Types;
+﻿using UsbInfo.Natives.Types;
 
 namespace UsbInfo.Extensions
 {

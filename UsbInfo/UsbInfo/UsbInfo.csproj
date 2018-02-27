@@ -56,9 +56,11 @@
     <Compile Include="Interfaces\IUsbHub.cs" />
     <Compile Include="Interfaces\IUsbRootHub.cs" />
     <Compile Include="Interfaces\IUsbNode.cs" />
+    <Compile Include="Interfaces\UsbDeviceType.cs" />
+    <Compile Include="Interfaces\UsbSupportSpeed.cs" />
     <Compile Include="Models\UnConnectUsbDevice.cs" />
-    <Compile Include="Natives\CrException.cs" />
-    <Compile Include="Natives\CrResult.cs" />
+    <Compile Include="Natives\PnpConfigrationException.cs" />
+    <Compile Include="Natives\PnpConfigrationResult.cs" />
     <Compile Include="Natives\DeviceIoControlInvoker.cs" />
     <Compile Include="Natives\Disposable.cs" />
     <Compile Include="Natives\HGlobal.cs" />

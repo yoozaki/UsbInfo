@@ -1,7 +1,9 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using JetBrains.Annotations;
+using Microsoft.Win32.SafeHandles;
 
 namespace UsbInfo.Natives
 {
+    [UsedImplicitly]
     internal class SafeDeviceHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         public SafeDeviceHandle()

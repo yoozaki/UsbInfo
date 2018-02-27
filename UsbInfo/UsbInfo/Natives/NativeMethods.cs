@@ -150,19 +150,19 @@ namespace UsbInfo.Natives
 
         private const int CM_LOCATE_DEVNODE_NORMAL = 0x00000000;
         [DllImport("setupapi.dll")]
-        internal static extern CrResult CM_Locate_DevNode(out uint pdnDevInst, string pDeviceID, int ulFlags = CM_LOCATE_DEVNODE_NORMAL);
+        internal static extern PnpConfigrationResult CM_Locate_DevNode(out uint pdnDevInst, string pDeviceID, int ulFlags = CM_LOCATE_DEVNODE_NORMAL);
 
         [DllImport("setupapi.dll")]
-        internal static extern CrResult CM_Get_Child(out uint pdnDevInst, uint dnDevInst, int ulFlags = 0);
+        internal static extern PnpConfigrationResult CM_Get_Child(out uint pdnDevInst, uint dnDevInst, int ulFlags = 0);
 
         [DllImport("setupapi.dll")]
-        internal static extern CrResult CM_Get_Sibling(out uint pdnDevInst, uint dnDevInst, int ulFlags = 0);
+        internal static extern PnpConfigrationResult CM_Get_Sibling(out uint pdnDevInst, uint dnDevInst, int ulFlags = 0);
 
         [DllImport("setupapi.dll", CharSet = CharSet.Auto)]
-        internal static extern CrResult CM_Get_Device_ID(uint dnDevInst, StringBuilder Buffer, int BufferSize, int ulFlags = 0);
+        internal static extern PnpConfigrationResult CM_Get_Device_ID(uint dnDevInst, StringBuilder Buffer, int BufferSize, int ulFlags = 0);
 
         [DllImport("setupapi.dll")]
-        internal static extern CrResult CM_Get_Device_ID_Size(out int pulLen, uint dnDevInst, int uflags = 0);
+        internal static extern PnpConfigrationResult CM_Get_Device_ID_Size(out int pulLen, uint dnDevInst, int uflags = 0);
 
 
         internal static void ThrowIfSetLastError(bool result)
@@ -173,11 +173,11 @@ namespace UsbInfo.Natives
             }
         }
 
-        internal static void ThrowIfNotCrSuccess(CrResult result)
+        internal static void ThrowIfNotCrSuccess(PnpConfigrationResult result)
         {
-            if (result != CrResult.CR_SUCCESS)
+            if (result != PnpConfigrationResult.CR_SUCCESS)
             {
-                throw new CrException(result);
+                throw new PnpConfigrationException(result);
             }
         }
 
