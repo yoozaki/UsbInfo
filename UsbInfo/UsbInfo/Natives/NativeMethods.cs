@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
+using JetBrains.Annotations;
 using Microsoft.Win32.SafeHandles;
 using UsbInfo.Natives.Types;
 
@@ -164,7 +165,7 @@ namespace UsbInfo.Natives
         [DllImport("setupapi.dll")]
         internal static extern PnpConfigrationResult CM_Get_Device_ID_Size(out int pulLen, uint dnDevInst, int uflags = 0);
 
-
+        [AssertionMethod]
         internal static void ThrowIfSetLastError(bool result)
         {
             if (!result)

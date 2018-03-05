@@ -1,6 +1,10 @@
-﻿namespace UsbInfo.Interfaces
+﻿using JetBrains.Annotations;
+
+namespace UsbInfo.Interfaces
 {
+    [UsedImplicitly(ImplicitUseTargetFlags.Members)]
     public enum UsbSupportSpeed
+
     {
         LowSpeed = 0,
         FullSpeed,

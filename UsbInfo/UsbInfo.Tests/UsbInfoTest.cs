@@ -49,6 +49,13 @@ namespace UsbInfo.Tests
         }
 
         [Fact]
+        public void TestDeviceFromVid()
+        {
+            var usbDevices = UsbInfo.Devices(0x8087);
+            Assert.NotEmpty(usbDevices);
+        }
+
+        [Fact]
         public void TestDeviceFromVidPid()
         {
             var usbDevices = UsbInfo.Devices(0x8087, 0x0A2B);
