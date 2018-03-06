@@ -1,2 +1,2 @@
 # UsbInfo
-This library can get usb device infomation in .NET.
+This library can get USB device information in .NET.
