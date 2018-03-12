@@ -5,8 +5,8 @@ using JetBrains.Annotations;
 namespace UsbInfo.Natives.Types
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct USB_NODE_CONNECTION_INFORMATION_EX
     {
         public uint ConnectionIndex;

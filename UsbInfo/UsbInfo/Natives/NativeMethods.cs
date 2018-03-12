@@ -19,6 +19,10 @@ namespace UsbInfo.Natives
         internal const int IOCTL_USB_GET_NODE_INFORMATION = 0x00220408;
         internal const int IOCTL_USB_GET_ROOT_HUB_NAME = 0x00220408;
         internal const int IOCTL_USB_GET_NODE_CONNECTION_DRIVERKEY_NAME = 0x00220420;
+        internal const int IOCTL_USB_GET_DESCRIPTOR_FROM_NODE_CONNECTION = 0x220410;
+
+        // USB 1.1: 9.4 Standard Device Requests, Table 9-5. Descriptor Types
+        internal const int USB_STRING_DESCRIPTOR_TYPE = 0x3; 
 
         // see https://docs.microsoft.com/en-us/windows-hardware/drivers/install/guid-devinterface-usb-host-controller
         private static readonly Guid GUID_DEVINTERFACE_USB_HOST_CONTROLLER =
@@ -164,6 +168,7 @@ namespace UsbInfo.Natives
 
         [DllImport("setupapi.dll")]
         internal static extern PnpConfigrationResult CM_Get_Device_ID_Size(out int pulLen, uint dnDevInst, int uflags = 0);
+
 
         [AssertionMethod]
         internal static void ThrowIfSetLastError(bool result)

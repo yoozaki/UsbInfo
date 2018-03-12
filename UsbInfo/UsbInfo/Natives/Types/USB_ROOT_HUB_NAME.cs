@@ -5,8 +5,8 @@ using JetBrains.Annotations;
 namespace UsbInfo.Natives.Types
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     internal struct  USB_ROOT_HUB_NAME
     {
         public readonly uint ActualLength;

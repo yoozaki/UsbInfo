@@ -6,9 +6,13 @@ namespace UsbInfo.Natives.Types
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct USB_MI_PARENT_INFORMATION
-    {
-        public readonly int NumberOfInterfaces;
+    [StructLayout(LayoutKind.Sequential)] 
+    internal struct USB_SETUP_PACKET 
+    { 
+        internal byte bmRequest; 
+        internal byte bRequest; 
+        internal short wValue; 
+        internal short wIndex; 
+        internal short wLength; 
     }
 }

@@ -17,6 +17,7 @@ namespace UsbInfo.Models
         public string DeviceDescription { get; }
         public string DeviceKey { get; }
         public string DevicePath { get; }
+        public string SerialNumber { get; }
 
         public UnConnectUsbDevice(uint portNo, IUsbNode parent)
         {

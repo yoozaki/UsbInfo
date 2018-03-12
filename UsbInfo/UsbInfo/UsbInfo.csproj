@@ -68,6 +68,7 @@
     <Compile Include="Models\HostController.cs" />
     <Compile Include="Natives\NativeMethods.cs" />
     <Compile Include="Natives\DeviceMetaData.cs" />
+    <Compile Include="Natives\Types\USB_DESCRIPTOR_REQUEST.cs" />
     <Compile Include="Natives\Types\USB_NODE_UNION.cs" />
     <Compile Include="Natives\SafeDeviceHandle.cs" />
     <Compile Include="Models\UsbDevice.cs" />
@@ -82,6 +83,8 @@
     <Compile Include="Natives\Types\USB_NODE_CONNECTION_INFORMATION_EX.cs" />
     <Compile Include="Natives\Types\USB_NODE_INFORMATION.cs" />
     <Compile Include="Natives\Types\USB_ROOT_HUB_NAME.cs" />
+    <Compile Include="Natives\Types\USB_SETUP_PACKET.cs" />
+    <Compile Include="Natives\Types\USB_STRING_DESCRIPTOR.cs" />
     <Compile Include="UsbInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 using UsbInfo.Interfaces;
@@ -55,35 +56,60 @@ namespace UsbInfo.Factories
                 driverKeyName,
                 deviceMetaData?.DevicePath,
                 deviceMetaData?.DeviceDescription,
+                GetSerialNumber(),
                 parentNode);
 
-            if (_usbConnectInfomation.DeviceDescriptor.bDeviceClass == 0xEF)
-            {
-                const int devicePathPrefix = 4;
-                var deviceId = usbDevice.DevicePath
-                    .Substring(devicePathPrefix, usbDevice.DevicePath.LastIndexOf("#", StringComparison.Ordinal)- devicePathPrefix)
-                    .Replace("#", @"\");
-                ThrowIfNotCrSuccess(CM_Locate_DevNode(out var devMiRoot, deviceId));
-                ThrowIfNotCrSuccess(CM_Get_Child(out var devChild, devMiRoot));
-
-                var miDevices = new List<UsbDevice> { CreateUsbMiDevice(devChild, usbDevice) };
-                while (true)
-                {
-                    if (CM_Get_Sibling(out var devSibling, devChild) != PnpConfigrationResult.CR_SUCCESS)
-                    {
-                        break;
-                    }
-
-                    miDevices.Add(CreateUsbMiDevice(devSibling, usbDevice));
-                }
-
-                return new UsbDevice(usbDevice, miDevices);
-            }
-
-            return usbDevice;
+            return _usbConnectInfomation.DeviceDescriptor.bDeviceClass == 0xEF 
+                        ? CreateUsbDeviceWithMiDevice(usbDevice) 
+                        : usbDevice;
         }
 
-        private static UsbDevice CreateUsbMiDevice(uint devChild, UsbDevice usbDevice)
+        private string GetSerialNumber()
+        {
+            if (_usbConnectInfomation.DeviceDescriptor.iSerialNumber <= 0) return string.Empty;
+
+            var request = new USB_DESCRIPTOR_REQUEST
+            {
+                ConnectionIndex = _portNo,
+                SetupPacket =
+                {
+                    wValue = (short) ((USB_STRING_DESCRIPTOR_TYPE << 8) +
+                                      _usbConnectInfomation.DeviceDescriptor.iSerialNumber)
+                }
+            };
+            request.SetupPacket.wLength = (short) Marshal.SizeOf(request);
+            // Language Code 
+            request.SetupPacket.wIndex = 0x409; 
+
+            var usbDescriptorRequest = DeviceIoControlInvoker.Invoke(
+                _hubHandle, IOCTL_USB_GET_DESCRIPTOR_FROM_NODE_CONNECTION, request);
+            return usbDescriptorRequest.StringDescriptor.bString;
+        }
+
+        private static IUsbDevice CreateUsbDeviceWithMiDevice(UsbDevice usbParentDevice)
+        {
+            const int devicePathPrefix = 4;
+            var deviceId = usbParentDevice.DevicePath
+                .Substring(devicePathPrefix, usbParentDevice.DevicePath.LastIndexOf("#", StringComparison.Ordinal) - devicePathPrefix)
+                .Replace("#", @"\");
+            ThrowIfNotCrSuccess(CM_Locate_DevNode(out var devMiRoot, deviceId));
+            ThrowIfNotCrSuccess(CM_Get_Child(out var devChild, devMiRoot));
+
+            var miDevices = new List<UsbDevice> {CreateMiDevice(devChild, usbParentDevice)};
+            while (true)
+            {
+                if (CM_Get_Sibling(out var devSibling, devChild) != PnpConfigrationResult.CR_SUCCESS)
+                {
+                    break;
+                }
+
+                miDevices.Add(CreateMiDevice(devSibling, usbParentDevice));
+            }
+
+            return new UsbDevice(usbParentDevice, miDevices);
+        }
+
+        private static UsbDevice CreateMiDevice(uint devChild, UsbDevice usbDevice)
         {
             return new UsbDevice(
                 usbDevice.PortNo,
@@ -94,6 +120,7 @@ namespace UsbInfo.Factories
                 "",
                 GetMiDeviceId(devChild),
                 "",
+                usbDevice.SerialNumber,
                 usbDevice);
         }
 

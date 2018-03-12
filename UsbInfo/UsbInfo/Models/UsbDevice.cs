@@ -13,6 +13,7 @@ namespace UsbInfo.Models
         public string DeviceDescription { get; }
         public string DeviceKey { get; }
         public string DevicePath { get; }
+        public string SerialNumber { get; }
         public IUsbNode Parent { get; }
         public IEnumerable<IUsbDevice> ConnectedDevices { get; } = new List<IUsbDevice>();
 
@@ -25,6 +26,7 @@ namespace UsbInfo.Models
             string deviceKey,
             string devicePath,
             string fridlyName,
+            string serialNumber,
             IUsbNode parentNode)
         {
             PortNo = portNo;
@@ -36,6 +38,7 @@ namespace UsbInfo.Models
             DeviceKey = deviceKey;
             DevicePath = devicePath;
             DeviceDescription = fridlyName;
+            SerialNumber = serialNumber;
         }
 
         public UsbDevice(
@@ -50,6 +53,7 @@ namespace UsbInfo.Models
                 usbDevice.DeviceKey,
                 usbDevice.DevicePath,
                 usbDevice.DeviceDescription,
+                usbDevice.SerialNumber,
                 usbDevice.Parent)
         {
             ConnectedDevices = connectedDevices;

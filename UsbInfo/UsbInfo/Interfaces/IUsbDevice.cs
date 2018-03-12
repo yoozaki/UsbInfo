@@ -10,5 +10,6 @@
         string DeviceDescription { get; }
         string DeviceKey { get; }
         string DevicePath { get; }
+        string SerialNumber { get; }
     }
 }

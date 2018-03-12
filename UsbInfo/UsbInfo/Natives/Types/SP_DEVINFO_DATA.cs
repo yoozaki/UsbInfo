@@ -6,8 +6,8 @@ using JetBrains.Annotations;
 namespace UsbInfo.Natives.Types
 {
     [UsedImplicitly(ImplicitUseTargetFlags.Members)]
-    [StructLayout(LayoutKind.Sequential)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct SP_DEVINFO_DATA
     {
         public int cbSize;

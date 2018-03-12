@@ -36,6 +36,7 @@ namespace UsbInfo.Tests
                 _output.WriteLine($"{indent}CurrentUsbDevice:{usbDevice.CurrentUsbDevice}");
                 _output.WriteLine($"{indent}DeviceKey:{usbDevice.DeviceKey}");
                 _output.WriteLine($"{indent}DevicePath:{usbDevice.DevicePath}");
+                _output.WriteLine($"{indent}SerialNumber:{usbDevice.SerialNumber}");
                 _output.WriteLine("");
                 DumpDevice(usbDevice.ConnectedDevices, indent + "\t");
             }

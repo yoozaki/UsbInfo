@@ -3,8 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace UsbInfo.Natives.Types
 {
-    [StructLayout(LayoutKind.Sequential)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct USB_NODE_INFORMATION
     {
         public int NodeType;
